@@ -1,57 +1,90 @@
 [
   {
     "id": 1,
-    "title": "Getting Started with React and Node.js",
-    "content": "React is a powerful JavaScript library for building user interfaces, while Node.js is a runtime environment that executes JavaScript code outside a web browser. Together, they form a robust stack for building modern web applications.\n\nIn this post, we'll explore the basics of setting up a React frontend with a Node.js backend. We'll cover project structure, essential dependencies, and best practices for connecting the two.\n\nKey topics covered:\n- Creating a React app with Vite\n- Setting up Express server\n- Implementing API endpoints\n- Handling CORS\n- Managing state with React hooks",
+    "title": "My Journey into Web Development",
+    "content": "Today marks my first year as a web developer, and what a journey it's been! When I first started, I was overwhelmed by the sheer amount of things to learn. React, Node.js, and all these modern tools seemed like mountains to climb.\n\nBut here's what I've learned: taking it step by step really works. I started with basic HTML and CSS, then gradually moved to JavaScript. Now, I'm building full-stack applications and loving every moment of it.\n\nThe biggest lesson? It's okay to not know everything. The tech world is huge, and we're all learning constantly. What matters is progress, not perfection.\n\nLooking forward to sharing more of my coding adventures with you all!",
     "date": "2024-01-01T10:00:00.000Z",
     "tags": [
-      "React",
-      "Node.js",
-      "Web Development",
-      "JavaScript"
+      "Personal",
+      "Coding",
+      "Learning"
     ]
   },
   {
     "id": 2,
-    "title": "Understanding Modern JavaScript Features",
-    "content": "JavaScript has evolved significantly over the years, introducing many powerful features that make coding more efficient and enjoyable. Let's explore some of the most useful modern JavaScript features.\n\n1. Arrow Functions\n2. Destructuring Assignment\n3. Spread and Rest Operators\n4. Template Literals\n5. Async/Await\n\nThese features have revolutionized how we write JavaScript, making our code more concise and readable.",
+    "title": "5 Books That Changed How I Think About Programming",
+    "content": "Reading has always been my favorite way to learn, and these books have completely transformed my approach to programming.\n\n1. 'Clean Code' - Taught me that code is more about communication than computers\n2. 'The Pragmatic Programmer' - Showed me the importance of craftsmanship\n3. 'Eloquent JavaScript' - Made complex concepts feel accessible\n4. 'You Don't Know JS' - Deepened my understanding of fundamentals\n5. 'Design Patterns' - Opened my eyes to software architecture\n\nThese aren't just technical books; they're stories about problem-solving and creativity. They've helped me see programming as an art form, not just a technical skill.",
     "date": "2024-01-02T15:30:00.000Z",
     "tags": [
-      "JavaScript",
-      "ES6",
-      "Programming",
-      "Web Development"
+      "Books",
+      "Learning",
+      "Reflection"
     ]
   },
   {
     "id": 3,
-    "title": "CSS Best Practices for Modern Web Design",
-    "content": "Creating maintainable and scalable CSS is crucial for modern web applications. This post covers essential CSS best practices and methodologies.\n\nTopics covered:\n- BEM Methodology\n- CSS Custom Properties\n- Flexbox and Grid layouts\n- Mobile-first approach\n- CSS-in-JS solutions\n\nBy following these practices, you can create more maintainable and scalable stylesheets for your web projects.",
+    "title": "Why I Started Blogging About Tech",
+    "content": "I never thought I'd be a blogger, but here I am! The decision to start sharing my tech journey came from a simple realization: I learn better when I teach others.\n\nWriting about what I learn helps me:\n- Understand concepts more deeply\n- Connect with other developers\n- Track my own progress\n- Help beginners who are just starting\n\nIt's amazing how writing can clarify your thoughts. Even if no one reads these posts, they're valuable for my own growth. But the connections I've made through blogging have been incredible!",
     "date": "2024-01-03T09:15:00.000Z",
     "tags": [
-      "CSS",
-      "Web Design",
-      "Frontend",
-      "Styling"
+      "Personal",
+      "Writing",
+      "Community"
     ]
   },
   {
     "id": 4,
-    "title": "Introduction to Web Security",
-    "content": "Web security is a critical aspect of modern web development. Understanding common vulnerabilities and how to prevent them is essential for any web developer.\n\nIn this post, we'll discuss:\n- XSS (Cross-Site Scripting)\n- CSRF (Cross-Site Request Forgery)\n- SQL Injection\n- Security Headers\n- Authentication best practices\n\nProtecting your web applications from these vulnerabilities is crucial for maintaining user trust and data security.",
+    "title": "A Day in My Life as a Remote Developer",
+    "content": "Many people ask me what it's like to work remotely as a developer. Here's a peek into my typical day:\n\n6:00 AM - Morning routine and coffee (lots of coffee!)\n7:00 AM - Quick exercise to energize\n8:00 AM - Start coding, usually my most productive hours\n12:00 PM - Lunch break and short walk\n1:00 PM - Team meetings and collaboration\n3:00 PM - More coding and problem-solving\n6:00 PM - Wrap up and plan tomorrow\n\nThe best part? No commute! The challenging part? Maintaining work-life balance. It's a constant learning process, but I wouldn't have it any other way.",
     "date": "2024-01-04T14:45:00.000Z",
     "tags": [
-      "Security",
-      "Web Development",
-      "Backend",
-      "Best Practices"
+      "Lifestyle",
+      "Remote Work",
+      "Personal"
     ]
   },
   {
     "id": 5,
-    "title": "My First Post",
-    "content": "Hello There This is My First Post Im lovin this website",
-    "tags": [],
-    "date": "2024-12-01T08:50:05.028Z"
+    "title": "Finding Balance: Coding and Mental Health",
+    "content": "Let's talk about something important: mental health in tech. As developers, we often push ourselves too hard, leading to burnout.\n\nHere's what helps me stay balanced:\n- Regular breaks (Pomodoro Technique)\n- Daily walks in nature\n- Meditation and mindfulness\n- Hobby time (I play guitar!)\n- Setting boundaries\n\nRemember: your worth isn't measured by lines of code. Take care of yourself first, the code can wait.",
+    "date": "2024-01-05T11:30:00.000Z",
+    "tags": [
+      "Health",
+      "Lifestyle",
+      "Personal"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "My Favorite Coffee Shops for Coding",
+    "content": "As a developer who loves working from different places, I've discovered some amazing coffee shops perfect for coding sessions.\n\nMy top picks in the city:\n1. The Busy Bean - Fast wifi and plenty of outlets\n2. Café Code - Quiet atmosphere and great lattes\n3. Digital Grounds - Developer-friendly with meeting spaces\n4. The Terminal - Tech community hangout\n\nThere's something special about coding while enjoying a good cup of coffee. These places have become my second office!",
+    "date": "2024-01-06T13:20:00.000Z",
+    "tags": [
+      "Lifestyle",
+      "Coffee",
+      "Workspace"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "What I Learned from My Biggest Project Failure",
+    "content": "Last month, I had to abandon a project I spent months on. It was tough, but the lessons were invaluable.\n\nWhat went wrong:\n- Tried to build too many features at once\n- Didn't listen enough to user feedback\n- Got caught up in perfectionism\n- Ignored early warning signs\n\nFailure is a better teacher than success. Now I know to start small, validate ideas early, and most importantly, not be afraid to pivot when things aren't working.",
+    "date": "2024-01-07T09:45:00.000Z",
+    "tags": [
+      "Learning",
+      "Experience",
+      "Personal"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "My Essential Developer Tools in 2024",
+    "content": "Everyone has their favorite tools, and these are mine! After years of trying different setups, here's what I can't live without:\n\nEditor: VS Code with custom themes\nTerminal: iTerm with Oh My Zsh\nNote-taking: Notion for organization\nMusic: My coding playlist on Spotify\nProductivity: Forest app for focus\n\nIt's not about having the most tools, but finding what works best for you. These help me stay productive and enjoy coding even more.",
+    "date": "2024-01-08T16:15:00.000Z",
+    "tags": [
+      "Tools",
+      "Productivity",
+      "Setup"
+    ]
   }
 ]
