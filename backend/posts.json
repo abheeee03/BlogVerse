@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Getting Started with React and Node.js",
+    "content": "React is a powerful JavaScript library for building user interfaces, while Node.js is a runtime environment that executes JavaScript code outside a web browser. Together, they form a robust stack for building modern web applications.\n\nIn this post, we'll explore the basics of setting up a React frontend with a Node.js backend. We'll cover project structure, essential dependencies, and best practices for connecting the two.\n\nKey topics covered:\n- Creating a React app with Vite\n- Setting up Express server\n- Implementing API endpoints\n- Handling CORS\n- Managing state with React hooks",
+    "date": "2024-01-01T10:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "Understanding Modern JavaScript Features",
+    "content": "JavaScript has evolved significantly over the years, introducing many powerful features that make coding more efficient and enjoyable. Let's explore some of the most useful modern JavaScript features.\n\n1. Arrow Functions\n2. Destructuring Assignment\n3. Spread and Rest Operators\n4. Template Literals\n5. Async/Await\n\nThese features have revolutionized how we write JavaScript, making our code more concise and readable.",
+    "date": "2024-01-02T15:30:00.000Z"
+  },
+  {
+    "id": 3,
+    "title": "CSS Best Practices for Modern Web Design",
+    "content": "Creating maintainable and scalable CSS is crucial for modern web applications. This post covers essential CSS best practices and methodologies.\n\nTopics covered:\n- BEM Methodology\n- CSS Custom Properties\n- Flexbox and Grid layouts\n- Mobile-first approach\n- CSS-in-JS solutions\n\nBy following these practices, you can create more maintainable and scalable stylesheets for your web projects.",
+    "date": "2024-01-03T09:15:00.000Z"
+  },
+  {
+    "id": 4,
+    "title": "Introduction to Web Security",
+    "content": "Web security is a critical aspect of modern web development. Understanding common vulnerabilities and how to prevent them is essential for any web developer.\n\nIn this post, we'll discuss:\n- XSS (Cross-Site Scripting)\n- CSRF (Cross-Site Request Forgery)\n- SQL Injection\n- Security Headers\n- Authentication best practices\n\nProtecting your web applications from these vulnerabilities is crucial for maintaining user trust and data security.",
+    "date": "2024-01-04T14:45:00.000Z"
+  }
+]
