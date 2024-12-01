@@ -86,5 +86,27 @@
       "Productivity",
       "Setup"
     ]
+  },
+  {
+    "id": 9,
+    "title": "My Unforgettable Trip to Japan: A Developer's Perspective",
+    "content": "Just returned from an amazing two-week trip to Japan, and I had to share my experiences! As a developer, visiting Akihabara in Tokyo was like entering tech heaven.\n\nHighlights:\n- Visited the famous Yodobashi Camera store - 8 floors of tech paradise\n- Worked from unique co-working spaces in Shibuya\n- Met local developers at a tech meetup in Tokyo\n- Experienced bullet trains and their incredible punctuality\n- Discovered Japanese work culture and its efficiency\n\nMixing travel with tech has given me fresh perspectives on how different cultures approach technology and work-life balance.",
+    "date": "2024-01-09T12:00:00.000Z",
+    "tags": [
+      "Travel",
+      "Technology",
+      "Culture"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Backpacking Through Europe: A Digital Nomad's Tale",
+    "content": "Three months, six countries, and countless lines of code - my European adventure as a digital nomad was incredible!\n\nBest remote work spots I found:\n- A cozy café in Amsterdam with canal views\n- Berlin's vibrant tech hubs and startup spaces\n- Barcelona's beachside co-working spaces\n- A historic library in Prague\n\nLessons learned:\n- Always check internet speeds before booking\n- Time zone management is crucial\n- Local tech communities are incredibly welcoming\n- Balance tourism with work commitments\n\nThis journey showed me that with good planning, you can truly code from anywhere!",
+    "date": "2024-01-10T14:30:00.000Z",
+    "tags": [
+      "Travel",
+      "Digital Nomad",
+      "Adventure"
+    ]
   }
 ]

@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import { FaTags } from 'react-icons/fa';
+import { SidebarContext } from '../App';
 
 const Homepage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTag, setSelectedTag] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
+  const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -52,11 +54,11 @@ const Homepage = () => {
   }
 
   return (
-    <div className="min-h-screen flex">
-      <main className="flex-1 mr-64">
+    <div className="min-h-screen">
+      <div className="md:pr-72">
         <div className="min-h-screen flex flex-col">
           <section className="text-gray-600 dark:text-gray-300 body-font overflow-hidden flex-grow">
-            <div className="container px-5 mx-auto">
+            <div className="container px-5 py-6 mx-auto">
               {/* Tags Section */}
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center mb-2">
@@ -137,8 +139,8 @@ const Homepage = () => {
           </section>
           <Footer />
         </div>
-      </main>
-      <Sidebar />
+      </div>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </div>
   );
 };
