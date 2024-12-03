@@ -7,16 +7,30 @@ const Post = require('./models/Post');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173'];
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:5173', 'https://blogverse-frontend.vercel.app'];
+
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type'],
+  credentials: true
 }));
 
 app.use(express.json());
@@ -24,7 +38,14 @@ app.use(express.json());
 // Connect to MongoDB with retry logic
 const connectDB = async (retries = 5) => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const options = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    };
+
+    await mongoose.connect(process.env.MONGODB_URI, options);
     console.log('MongoDB Connected Successfully');
   } catch (error) {
     if (retries > 0) {
@@ -40,9 +61,22 @@ const connectDB = async (retries = 5) => {
 // Initialize MongoDB connection
 connectDB();
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    message: isProduction ? 'Internal Server Error' : err.message,
+    error: isProduction ? {} : err
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Get all posts
@@ -151,6 +185,7 @@ app.post('/api/generate-description', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
 }); 
