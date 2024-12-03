@@ -41,7 +41,7 @@ const PostList = () => {
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
-          <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <article key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div className="p-6">
               <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                 {post.title}
@@ -57,7 +57,7 @@ const PostList = () => {
                 {post.content}
               </p>
               <Link
-                to={`/post/${post.id}`}
+                to={`/post/${post._id}`}
                 className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center group"
               >
                 Read More

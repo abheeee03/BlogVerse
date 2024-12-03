@@ -58,7 +58,7 @@ const Trending = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {trendingPosts.map((post) => (
                   <div 
-                    key={post.id}
+                    key={post._id}
                     className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
                   >
                     <div className="p-6">
@@ -94,7 +94,7 @@ const Trending = () => {
                           ))}
                         </div>
                         <Link
-                          to={`/post/${post.id}`}
+                          to={`/post/${post._id}`}
                           className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm inline-flex items-center"
                         >
                           Read More

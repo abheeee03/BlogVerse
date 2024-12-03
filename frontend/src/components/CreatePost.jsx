@@ -1,43 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPen } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
+import { FaPen, FaMagic } from 'react-icons/fa';
 import Sidebar from './Sidebar';
-import { useContext } from 'react';
 import { SidebarContext } from '../App';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const navigate = useNavigate();
   const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext);
 
+  // Generate blog content using AI
+  const generateContent = async () => {
+    if (!title.trim()) {
+      alert('Please enter a title first');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const response = await axios.post(`${API_URL}/api/generate-description`, {
+        title: title.trim()
+      });
+      setContent(response.data.description);
+    } catch (error) {
+      alert('Failed to generate content. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
       const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
-      
-      await axios.post('http://localhost:5000/api/posts', {
+      await axios.post(`${API_URL}/api/posts`, {
         title,
         content,
-        tags: tagsArray,
-        date: new Date().toISOString()
+        tags: tagsArray
       });
 
       setShowSuccess(true);
-      
-      // Redirect after 2 seconds
-      setTimeout(() => {
-        navigate('/posts');
-      }, 2000);
-
+      setTimeout(() => navigate('/posts'), 2000);
     } catch (error) {
-      console.error('Error creating post:', error);
+      alert('Failed to create post. Please try again.');
     }
   };
 
@@ -45,7 +60,6 @@ const CreatePost = () => {
     <div className="min-h-screen">
       <div className="md:pr-72">
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          {/* Success Popup */}
           <AnimatePresence>
             {showSuccess && (
               <motion.div
@@ -55,11 +69,7 @@ const CreatePost = () => {
                 className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
               >
                 <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 px-8 py-4 rounded-lg shadow-lg flex items-center">
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -74,13 +84,11 @@ const CreatePost = () => {
 
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-              {/* Header */}
               <div className="px-6 py-4 border-b dark:border-gray-700 flex items-center">
                 <FaPen className="text-xl text-blue-600 dark:text-blue-400 mr-3" />
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">Create New Post</h1>
               </div>
 
-              {/* Form */}
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
                   <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -98,9 +106,20 @@ const CreatePost = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Content
-                  </label>
+                  <div className="flex justify-between items-center mb-2">
+                    <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Content
+                    </label>
+                    <button
+                      type="button"
+                      onClick={generateContent}
+                      disabled={isGenerating}
+                      className="px-4 py-2 bg-purple-600 dark:bg-purple-500 text-white text-sm font-medium rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      <FaMagic className="text-lg" />
+                      {isGenerating ? 'Generating...' : 'Generate with AI'}
+                    </button>
+                  </div>
                   <textarea
                     id="content"
                     rows="12"

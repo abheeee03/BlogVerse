@@ -7,32 +7,32 @@ const PostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Fetch post data when component mounts or ID changes
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
         setPost(response.data);
       } catch (error) {
-        console.error('Error fetching post:', error);
-        navigate('/');
+        navigate('/posts');
       }
     };
     fetchPost();
   }, [id, navigate]);
 
+  // Show loading spinner while post is being fetched
   if (!post) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400" />
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Back Navigation */}
       <Link
-        to="/"
+        to="/posts"
         className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 mb-8 group"
       >
         <svg
@@ -51,9 +51,7 @@ const PostDetail = () => {
         Back to Posts
       </Link>
 
-      {/* Main Article */}
       <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-        {/* Article Header */}
         <div className="p-8 pb-4">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
             {post.title}
@@ -67,12 +65,12 @@ const PostDetail = () => {
                 day: 'numeric'
               })}
             </time>
-            {post.tags && post.tags.length > 0 && (
+            {post.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
                   <Link
                     key={tag}
-                    to={`/?tag=${tag}`}
+                    to={`/posts?tag=${tag}`}
                     className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800 transition-colors"
                   >
                     {tag}
@@ -83,7 +81,6 @@ const PostDetail = () => {
           </div>
         </div>
 
-        {/* Article Content */}
         <div className="px-8 pb-8">
           <div className="prose prose-lg max-w-none dark:prose-invert">
             {post.content.split('\n').map((paragraph, index) => (

@@ -1,77 +1,77 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const mongoose = require('mongoose');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Post = require('./models/Post');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+// Initialize Gemini AI
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // CORS configuration
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173'];
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
 
-// Path to posts.json
-const postsFile = path.join(__dirname, 'posts.json');
-
-// Ensure posts.json exists
-if (!fs.existsSync(postsFile)) {
-  fs.writeFileSync(postsFile, '[]', 'utf8');
-}
-
-// Wrap file operations in try-catch
-const readPosts = () => {
+// Connect to MongoDB with retry logic
+const connectDB = async (retries = 5) => {
   try {
-    return JSON.parse(fs.readFileSync(postsFile, 'utf8'));
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB Connected Successfully');
   } catch (error) {
-    console.error('Error reading posts:', error);
-    return [];
+    if (retries > 0) {
+      console.log(`MongoDB connection failed. Retrying... (${retries} attempts left)`);
+      setTimeout(() => connectDB(retries - 1), 5000);
+    } else {
+      console.error('MongoDB connection failed after all retries');
+      process.exit(1);
+    }
   }
 };
 
-const writePosts = (posts) => {
-  try {
-    fs.writeFileSync(postsFile, JSON.stringify(posts, null, 2));
-    return true;
-  } catch (error) {
-    console.error('Error writing posts:', error);
-    return false;
-  }
-};
+// Initialize MongoDB connection
+connectDB();
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Get all posts
-app.get('/api/posts', (req, res) => {
+app.get('/api/posts', async (req, res) => {
   try {
-    const posts = readPosts();
-    res.json(posts.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    const posts = await Post.find().sort({ date: -1 });
+    res.json(posts);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching posts' });
   }
 });
 
 // Get posts by tag
-app.get('/api/posts/tag/:tag', (req, res) => {
+app.get('/api/posts/tag/:tag', async (req, res) => {
   try {
-    const posts = readPosts();
     const tag = req.params.tag.toLowerCase();
-    const filteredPosts = posts.filter(post => 
-      post.tags && post.tags.some(t => t.toLowerCase().includes(tag))
-    );
-    res.json(filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    const posts = await Post.find({
+      tags: { $regex: tag, $options: 'i' }
+    }).sort({ date: -1 });
+    res.json(posts);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching posts by tag' });
   }
 });
 
 // Get single post
-app.get('/api/posts/:id', (req, res) => {
+app.get('/api/posts/:id', async (req, res) => {
   try {
-    const posts = readPosts();
-    const post = posts.find(p => p.id === parseInt(req.params.id));
+    const post = await Post.findById(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
     res.json(post);
   } catch (error) {
@@ -80,66 +80,74 @@ app.get('/api/posts/:id', (req, res) => {
 });
 
 // Create new post
-app.post('/api/posts', (req, res) => {
+app.post('/api/posts', async (req, res) => {
   try {
-    const posts = readPosts();
-    const newPost = {
-      id: posts.length + 1,
-      title: req.body.title,
-      content: req.body.content,
-      tags: req.body.tags || [],
-      date: new Date().toISOString()
-    };
-    posts.push(newPost);
-    if (writePosts(posts)) {
-      res.status(201).json(newPost);
-    } else {
-      res.status(500).json({ message: 'Error saving post' });
-    }
+    const { title, content, tags } = req.body;
+    const post = new Post({
+      title,
+      content,
+      tags: tags || [],
+      date: new Date()
+    });
+    
+    const savedPost = await post.save();
+    res.status(201).json(savedPost);
   } catch (error) {
     res.status(500).json({ message: 'Error creating post' });
   }
 });
 
 // Update post
-app.put('/api/posts/:id', (req, res) => {
+app.put('/api/posts/:id', async (req, res) => {
   try {
-    const posts = readPosts();
-    const index = posts.findIndex(p => p.id === parseInt(req.params.id));
-    if (index === -1) return res.status(404).json({ message: 'Post not found' });
+    const { title, content, tags } = req.body;
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { title, content, tags },
+      { new: true }
+    );
     
-    posts[index] = {
-      ...posts[index],
-      title: req.body.title,
-      content: req.body.content,
-      tags: req.body.tags || posts[index].tags
-    };
-    
-    if (writePosts(posts)) {
-      res.json(posts[index]);
-    } else {
-      res.status(500).json({ message: 'Error updating post' });
-    }
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    res.json(post);
   } catch (error) {
     res.status(500).json({ message: 'Error updating post' });
   }
 });
 
 // Delete post
-app.delete('/api/posts/:id', (req, res) => {
+app.delete('/api/posts/:id', async (req, res) => {
   try {
-    const posts = readPosts();
-    const index = posts.findIndex(p => p.id === parseInt(req.params.id));
-    if (index === -1) return res.status(404).json({ message: 'Post not found' });
-    
-    const deletedPost = posts.splice(index, 1)[0];
-    if (writePosts(posts)) {
-      res.json(deletedPost);
-    } else {
-      res.status(500).json({ message: 'Error deleting post' });
-    }
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    res.json(post);
   } catch (error) {
     res.status(500).json({ message: 'Error deleting post' });
+  }
+});
+
+// Generate blog description using AI
+app.post('/api/generate-description', async (req, res) => {
+  try {
+    const { title } = req.body;
+    
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ message: 'Gemini API key not configured' });
+    }
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    
+    const prompt = `Generate a concise and engaging description/summary for a blog post with the title: "${title}".
+    The description should be approximately 2-3 sentences long (50-70 words), capturing the main idea or hook of what the blog post would be about.
+    Make it compelling and informative, suitable for a blog post preview or meta description.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const description = response.text();
+
+    res.json({ description });
+  } catch (error) {
+    console.error('Error generating description:', error);
+    res.status(500).json({ message: 'Error generating description', error: error.message });
   }
 });
 

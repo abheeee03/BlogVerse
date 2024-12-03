@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Footer from './Footer';
-import Sidebar from './Sidebar';
+import { Link } from 'react-router-dom';
 import { FaTags } from 'react-icons/fa';
 import { SidebarContext } from '../App';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
 
 const Homepage = () => {
   const [posts, setPosts] = useState([]);
@@ -13,6 +13,7 @@ const Homepage = () => {
   const [allPosts, setAllPosts] = useState([]);
   const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext);
 
+  // Fetch all posts on component mount
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -21,7 +22,7 @@ const Homepage = () => {
         setAllPosts(fetchedPosts);
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }
@@ -29,12 +30,11 @@ const Homepage = () => {
     fetchPosts();
   }, []);
 
+  // Filter posts when tag selection changes
   useEffect(() => {
     if (selectedTag) {
       const filteredPosts = allPosts.filter(post => 
-        post.tags && post.tags.some(t => 
-          t.toLowerCase().includes(selectedTag.toLowerCase())
-        )
+        post.tags?.some(t => t.toLowerCase().includes(selectedTag.toLowerCase()))
       );
       setPosts(filteredPosts);
     } else {
@@ -48,7 +48,7 @@ const Homepage = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400" />
       </div>
     );
   }
@@ -59,7 +59,6 @@ const Homepage = () => {
         <div className="min-h-screen flex flex-col">
           <section className="text-gray-600 dark:text-gray-300 body-font overflow-hidden flex-grow">
             <div className="container px-5 py-6 mx-auto">
-              {/* Tags Section */}
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center mb-2">
                   <FaTags className="mr-2" />
@@ -82,13 +81,12 @@ const Homepage = () => {
                 </div>
               </div>
 
-              {/* Posts List */}
               <div className="-my-3 divide-y divide-gray-100 dark:divide-gray-800">
                 {posts.map((post) => (
-                  <div key={post.id} className="py-3 flex flex-wrap md:flex-nowrap">
+                  <div key={post._id} className="py-3 flex flex-wrap md:flex-nowrap">
                     <div className="md:w-64 md:mb-0 mb-3 flex-shrink-0 flex flex-col">
                       <span className="font-semibold title-font text-gray-700 dark:text-gray-300">
-                        {post.tags && post.tags.length > 0 ? post.tags[0] : 'BLOG'}
+                        {post.tags?.[0] || 'BLOG'}
                       </span>
                       <time className="mt-1 text-gray-500 dark:text-gray-400 text-sm">
                         {new Date(post.date).toLocaleDateString('en-US', {
@@ -105,9 +103,8 @@ const Homepage = () => {
                       <p className="leading-relaxed line-clamp-3 mb-3 dark:text-gray-300">
                         {post.content}
                       </p>
-                      {/* Post Tags */}
                       <div className="flex flex-wrap gap-1.5 mb-3">
-                        {post.tags && post.tags.map((tag) => (
+                        {post.tags?.map((tag) => (
                           <button
                             key={tag}
                             onClick={() => setSelectedTag(tag)}
@@ -122,13 +119,13 @@ const Homepage = () => {
                         ))}
                       </div>
                       <Link
-                        to={`/post/${post.id}`}
+                        to={`/post/${post._id}`}
                         className="text-indigo-500 dark:text-indigo-400 inline-flex items-center hover:text-indigo-600 dark:hover:text-indigo-300"
                       >
                         Read More
                         <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M5 12h14"></path>
-                          <path d="M12 5l7 7-7 7"></path>
+                          <path d="M5 12h14" />
+                          <path d="M12 5l7 7-7 7" />
                         </svg>
                       </Link>
                     </div>
