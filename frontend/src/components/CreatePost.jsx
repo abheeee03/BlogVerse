@@ -6,7 +6,7 @@ import { FaPen, FaMagic } from 'react-icons/fa';
 import Sidebar from './Sidebar';
 import { SidebarContext } from '../App';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
