@@ -103,41 +103,99 @@ npm run dev
 
 ## 📦 Project Structure
 
-\`\`\`
+```
 blogverse/
-├── backend/
-│   ├── models/
-│   │   └── Post.js
-│   ├── .env
-│   ├── server.js
-│   └── package.json
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   │   ├── CreatePost.jsx
-    │   │   ├── Homepage.jsx
-    │   │   ├── PostDetail.jsx
-    │   │   ├── PostList.jsx
-    │   │   ├── Trending.jsx
-    │   │   └── Sidebar.jsx
-    │   ├── App.jsx
-    │   └── main.jsx
-    ├── .env
-    └── package.json
-\`\`\`
+├── backend/                  # Backend server application
+│   ├── config/              # Configuration files
+│   │   └── database.js      # MongoDB connection setup
+│   │
+│   ├── controllers/         # Request handlers
+│   │   ├── aiController.js  # AI generation logic
+│   │   └── postController.js# Post CRUD operations
+│   │
+│   ├── middleware/          # Express middleware
+│   │   └── errorHandler.js  # Global error handling
+│   │
+│   ├── models/             # Database models
+│   │   └── Post.js        # Post schema and model
+│   │
+│   ├── routes/            # API routes
+│   │   ├── aiRoutes.js   # AI endpoints
+│   │   └── postRoutes.js # Post endpoints
+│   │
+│   ├── .env              # Backend environment variables
+│   ├── server.js         # Express app entry point
+│   └── package.json      # Backend dependencies
+│
+├── frontend/              # Frontend React application
+│   ├── src/
+│   │   ├── components/   # React components
+│   │   │   ├── CreatePost.jsx    # Post creation form
+│   │   │   ├── Homepage.jsx      # Main landing page
+│   │   │   ├── PostDetail.jsx    # Single post view
+│   │   │   ├── PostList.jsx      # Posts listing
+│   │   │   ├── Trending.jsx      # Trending posts
+│   │   │   └── Sidebar.jsx       # Navigation sidebar
+│   │   │
+│   │   ├── App.jsx      # Root component
+│   │   └── main.jsx     # Application entry point
+│   │
+│   ├── .env             # Frontend environment variables
+│   └── package.json     # Frontend dependencies
+│
+└── README.md            # Project documentation
+```
+
+### Backend Structure Details
+
+#### Config
+- `database.js`: MongoDB connection configuration with retry logic
+
+#### Controllers
+- `aiController.js`: Handles AI-powered content generation using Gemini
+- `postController.js`: Manages blog post CRUD operations
+
+#### Middleware
+- `errorHandler.js`: Global error handling and formatting
+
+#### Models
+- `Post.js`: Mongoose schema for blog posts with timestamps
+
+#### Routes
+- `aiRoutes.js`: AI-related endpoints
+- `postRoutes.js`: Blog post endpoints
+
+### Frontend Structure Details
+
+#### Components
+- `CreatePost.jsx`: Post creation with AI assistance
+- `Homepage.jsx`: Main page with post listing
+- `PostDetail.jsx`: Individual post view
+- `PostList.jsx`: Reusable post listing component
+- `Trending.jsx`: Trending posts section
+- `Sidebar.jsx`: Navigation and theme controls
+
+#### Core Files
+- `App.jsx`: Main component with routing
+- `main.jsx`: Application bootstrap
+- `.env`: Environment configuration
 
 ## 🌐 API Endpoints
 
-### Posts
-- \`GET /api/posts\` - Get all posts
-- \`GET /api/posts/:id\` - Get a specific post
-- \`GET /api/posts/tag/:tag\` - Get posts by tag
-- \`POST /api/posts\` - Create a new post
-- \`PUT /api/posts/:id\` - Update a post
-- \`DELETE /api/posts/:id\` - Delete a post
+### Posts API (`/api/posts`)
+```
+GET    /api/posts          # Get all posts
+GET    /api/posts/:id      # Get single post
+GET    /api/posts/tag/:tag # Get posts by tag
+POST   /api/posts          # Create new post
+PUT    /api/posts/:id      # Update post
+DELETE /api/posts/:id      # Delete post
+```
 
-### AI Generation
-- \`POST /api/generate-description\` - Generate AI content
+### AI API (`/api`)
+```
+POST   /api/generate-description  # Generate AI content
+```
 
 ## 🚀 Deployment
 
