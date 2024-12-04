@@ -1,28 +1,35 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { getPost } from '../utils/api';
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
+  const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Fetch post data when component mounts or ID changes
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/posts/${id}`);
+        const response = await getPost(id);
         setPost(response.data);
+        setError(null);
       } catch (error) {
-        navigate('/posts');
+        setError('Failed to fetch post. Please try again later.');
+        setTimeout(() => navigate('/posts'), 2000);
       }
     };
     fetchPost();
   }, [id, navigate]);
 
-  // Show loading spinner while post is being fetched
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
+
   if (!post) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">

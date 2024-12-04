@@ -1,12 +1,10 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPen, FaMagic } from 'react-icons/fa';
 import Sidebar from './Sidebar';
 import { SidebarContext } from '../App';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { createPost, generateDescription } from '../utils/api';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -14,10 +12,10 @@ const CreatePost = () => {
   const [tags, setTags] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext);
 
-  // Generate blog content using AI
   const generateContent = async () => {
     if (!title.trim()) {
       alert('Please enter a title first');
@@ -25,25 +23,24 @@ const CreatePost = () => {
     }
 
     setIsGenerating(true);
+    setError(null);
     try {
-      const response = await axios.post(`${API_URL}/api/generate-description`, {
-        title: title.trim()
-      });
+      const response = await generateDescription(title.trim());
       setContent(response.data.description);
     } catch (error) {
-      alert('Failed to generate content. Please try again.');
+      setError('Failed to generate content. Please try again.');
     } finally {
       setIsGenerating(false);
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     
     try {
       const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
-      await axios.post(`${API_URL}/api/posts`, {
+      await createPost({
         title,
         content,
         tags: tagsArray
@@ -52,7 +49,7 @@ const CreatePost = () => {
       setShowSuccess(true);
       setTimeout(() => navigate('/posts'), 2000);
     } catch (error) {
-      alert('Failed to create post. Please try again.');
+      setError('Failed to create post. Please try again.');
     }
   };
 

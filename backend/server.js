@@ -11,9 +11,7 @@ const PORT = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 // CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ['http://localhost:5173', 'https://blogverse-frontend.vercel.app'];
+const allowedOrigins = process.env.ALLOWED_ORIGINS
 
 app.use(cors({
   origin: function(origin, callback) {
